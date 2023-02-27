@@ -1,0 +1,101 @@
+body{
+  background-color:rgb(252, 250, 222) !important;
+}
+
+#navbar{
+  padding: 2% 7% !important;
+}
+
+.navbar{
+  background-color: none !important;
+}
+
+.nav-link{
+  padding: 0px 25px !important;
+}
+
+.navbar-brand{
+  /* font-weight: bold !important; */
+  color: red !important;
+  font-size: 2rem !important;
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 2px !important;
+}
+
+#newProduct{
+  text-align: center !important;
+  background-color: #F6E6C2 !important;
+  padding: 2% !important;
+}
+
+.cf-products{
+  padding: 2% 10% !important;
+  background-color: #F0EEED !important;
+}
+
+
+#billArea{
+  padding: 2% 7% !important;
+  background-color: #FFF9B0;
+}
+
+#billArea h1{
+  text-align: center;
+  font-family: 'Alkalami', serif;
+  background: -webkit-linear-gradient(red, brown);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tableDiv{
+  padding: 2% 0% !important;
+}
+
+#newParty{
+  text-align: center;
+  padding: 2% 7% !important;
+  background-color: #E1FFB1;
+}
+
+.partyH1{
+  font-weight: bold;
+  color: red !important;
+  font-size: 2.5rem !important;
+}
+
+.billHead{
+  text-align: center;
+  font-family: 'Alkalami', serif;
+  background: -webkit-linear-gradient(red, brown);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cf-transport{
+  padding: 2% 7% !important;
+}
+
+.cf-main{
+  padding: 2% 4% !important;
+  text-align: center;
+  
+}
+.mainHead{
+  font-family: 'Alkalami', serif;
+  color: #F9F9F9;
+  margin-bottom: 0%;
+}
+
+.footerDiv{
+  width: 100%;
+  height: 25px;
+  background-color: #FC7300;
+  margin: 0% !important;
+  padding: 0% !important;
+}
+
+
+.cf-products{
+  padding: 2% 14% !important;
+  background-color:lightgoldenrodyellow;
+}
