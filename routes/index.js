@@ -410,14 +410,29 @@ router.get('/printBillOriginal/:id', function(req,res,next){
         retry: 3,
         silent: false
     };
+
+    const stats = PCR.getStats(option);
     
-    const stats = await PCR(option);
-      // launch a new chrome instance
-         const browser = await stats.puppeteer.launch({
+    
+    
+
+    if(stats){
+      const browser = await stats.puppeteer.launch({
           headless:false,
           args: ['--no-sandbox','--disable-setuid-sandbox'],
           executablePath: stats.executablePath
         }); 
+    }
+    else{
+      const stats = await PCR(option);
+      const browser = await stats.puppeteer.launch({
+          headless:false,
+          args: ['--no-sandbox','--disable-setuid-sandbox'],
+          executablePath: stats.executablePath
+        }); 
+    }
+      // launch a new chrome instance
+         
   
       // create a new page
          const page = await browser.newPage();
