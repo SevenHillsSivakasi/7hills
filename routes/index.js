@@ -8,7 +8,7 @@ const { ToWords } = require('to-words');
 const toWords = new ToWords();
 var Xvfb = require('xvfb');
 var xvfb = new Xvfb();
-// const puppeteer = require('puppeteer')
+
 const fs = require('fs');
 
 /* GET home page. */
@@ -400,6 +400,7 @@ router.get('/printBillOriginal/:id', function(req,res,next){
       xvfb.start((err)=>{if (err) console.error(err)});
     
       const PCR = require("puppeteer-chromium-resolver");
+      const puppeteer = require('puppeteer');
       const option = {
         revision: "",
         detectionPath: "",
@@ -413,8 +414,7 @@ router.get('/printBillOriginal/:id', function(req,res,next){
 
     const stats = PCR.getStats(option);
     
-    
-    
+       
 
     if(stats){
       const browser = await stats.puppeteer.launch({
@@ -422,20 +422,9 @@ router.get('/printBillOriginal/:id', function(req,res,next){
           args: ['--no-sandbox','--disable-setuid-sandbox'],
           executablePath: stats.executablePath
         }); 
-    }
-    else{
-      const stats = await PCR(option);
-      const browser = await stats.puppeteer.launch({
-          headless:false,
-          args: ['--no-sandbox','--disable-setuid-sandbox'],
-          executablePath: stats.executablePath
-        }); 
-    }
-      // launch a new chrome instance
-         
-  
-      // create a new page
-         const page = await browser.newPage();
+
+          // create a new page
+          const page = await browser.newPage();
 
           // Configure the navigation timeout
           await page.setDefaultNavigationTimeout(0);
@@ -461,6 +450,53 @@ router.get('/printBillOriginal/:id', function(req,res,next){
 
       // close the browser
           await browser.close();
+
+
+
+    }
+    else{
+
+      const stats = await PCR(option);
+      const browser = await stats.puppeteer.launch({
+          headless:false,
+          args: ['--no-sandbox','--disable-setuid-sandbox'],
+          executablePath: stats.executablePath
+        }); 
+   
+      // launch a new chrome instance
+        // create a new page
+        const page = await browser.newPage();
+
+        // Configure the navigation timeout
+        await page.setDefaultNavigationTimeout(0);
+
+       await page.setCacheEnabled(false); 
+       // set your html as the pages content
+        
+        await page.setContent(html, {
+          waitUntil: 'domcontentloaded'
+        })
+        await page.emulateMediaType('screen');
+
+    // create a pdf buffer
+        const pdfBuffer = await page.pdf({
+          format: 'A4',
+          path: fileName,
+          printBackground:true
+        })
+
+        console.log('done');
+        res.header('content-type','application/pdf');
+        res.send(pdfBuffer);
+
+    // close the browser
+        await browser.close();
+    }
+   
+     
+         
+  
+    
   
   })().catch((error) =>{
     console.error("the message is " + error.message);
