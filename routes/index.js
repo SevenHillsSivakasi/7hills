@@ -382,7 +382,7 @@ router.get('/printBillOriginal/:id', function(req,res,next){
    
     var fileName = './result.pdf';
 
-    res.render('invoiceGenerator', {bill:result}, function(err,html){
+    res.render('invoicegenerator', {bill:result}, function(err,html){
       
       if(err){
         return console.log(err);
@@ -414,7 +414,7 @@ router.get('/printBillOriginal/:id', function(req,res,next){
           headless:false,
           args: ['--no-sandbox','--disable-setuid-sandbox'],
           executablePath: stats.executablePath,
-          ignoreDefaultArgs: ["--enable-automation"],
+          // ignoreDefaultArgs: ["--enable-automation"],
           userDataDir: "./user_data",
           defaultViewport: null,
           devtools: true,
