@@ -6,6 +6,8 @@ var Transport = require('../modals/transport');
 var Bill = require('../modals/bill');
 const { ToWords } = require('to-words');
 const toWords = new ToWords();
+var Xvfb = require('xvfb');
+var xvfb = new Xvfb();
 // const puppeteer = require('puppeteer')
 const fs = require('fs');
 
@@ -394,7 +396,8 @@ router.get('/printBillOriginal/:id', function(req,res,next){
       //   silent: true,
       //   xvfb_args: ["-screen", "0", '1280x720x24', "-ac"],
       // });
-      // xvfb.start((err)=>{if (err) console.error(err)});
+      
+      xvfb.start((err)=>{if (err) console.error(err)});
     
       const PCR = require("puppeteer-chromium-resolver");
       const option = {
@@ -413,12 +416,7 @@ router.get('/printBillOriginal/:id', function(req,res,next){
          const browser = await stats.puppeteer.launch({
           headless:false,
           args: ['--no-sandbox','--disable-setuid-sandbox'],
-          executablePath: stats.executablePath,
-          // ignoreDefaultArgs: ["--enable-automation"],
-          userDataDir: "./user_data",
-          defaultViewport: null,
-          devtools: true,
-          ignoreHTTPSErrors: true,
+          executablePath: stats.executablePath
         }); 
   
       // create a new page
