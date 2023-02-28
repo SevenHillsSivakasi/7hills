@@ -508,7 +508,7 @@ router.get('/printBillOriginal/:id', function(req,res,next){
 
       
     });
-  })
+})
 
 
 module.exports = router;
