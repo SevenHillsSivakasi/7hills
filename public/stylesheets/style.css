@@ -3,21 +3,32 @@ body{
 }
 
 #navbar{
-  padding: 2% 7% !important;
+  padding: 0% 7% 0% !important;
+  background-color:lightgoldenrodyellow !important;
 }
 
 .navbar{
-  background-color: none !important;
+  background-color: lightgoldenrodyellow !important;
+}
+
+.logoImg{
+  width: 100px;
+  height: 90px;
 }
 
 .nav-link{
   padding: 0px 25px !important;
+  font-weight: bold !important;
+}
+
+.nav-link:hover{
+  color: brown !important;
 }
 
 .navbar-brand{
   /* font-weight: bold !important; */
-  color: red !important;
-  font-size: 2rem !important;
+  /* color: red !important; */
+  font-size: 3rem !important;
   font-family: 'Anton', sans-serif;
   letter-spacing: 2px !important;
 }
