@@ -12,17 +12,19 @@ var schema = new Schema({
     gstNo:{type:String},
     panAadhar:{type:String},
     gstType:{type:String},
+    cgstV:{type:String},
+    sgstV:{type:String},
+    igstV:{type:String},
     transport:{type:String},
     billItems:{type:Object, required:true},
     billAmount:{type:Number},
-    totalCases:{type:Number},
-    pkgCharge:{type:Number},
+    totalReels:{type:Number},
+    netWeight:{type:Number},
     taxableValue:{type:Number},
     cgst:{type:Number, default:0},
     sgst:{type:Number, default:0},
     igst:{type:Number, default:0},
     totalBillValue:{type:Number},
-    finalBillValue:{type:Number},
     amountInWords:{type:String}
 });
 

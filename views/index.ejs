@@ -16,14 +16,15 @@
                   <th scope="col">Party</th>
                   <th scope="col">Items</th>
                   <th scope="col">Bill</th>
-                  <th scope="col">Pkg Charge</th>
+                  <th scope="col">Total Weight</th>
+                  <th scope="col">Total Reels</th>
                   <th scope="col">Taxable Value</th>
                   <th scope="col">CGST</th>
                   <th scope="col">SGST</th>
                   <th scope="col">IGST</th>
                   <th scope="col">Total Bill</th>
                   <th scope="col">Transport</th>
-                  <th scope="col">Original</th>
+                  <th scope="col">Print</th>
                   <th scope="col">Delete</th>
                 </tr>
               </thead>
@@ -53,23 +54,27 @@
                                         <table class="table">
                                             <thead>
                                               <tr style="background-color: yellow;color:black;">
-                                                <th scope="col">Case No</th>
                                                 <th scope="col">Name</th>
-                                                <th scope="col">Quantity</th>
+                                                <th scope="col">BF</th>
+                                                <th scope="col">GSM</th>
+                                                <th scope="col">Size</th>
+                                                <th scope="col">Weight</th>
+                                                <th scope="col">Reels</th>
                                                 <th scope="col">Rate</th>
-                                                <th scope="col">Per</th>
-                                                <th scope="col">Subtotal</th>
+                                                <th scope="col">Amount</th>
                                               </tr>
                                             </thead>
                                             <tbody>
                                                 <% bill.billItems.forEach(items => { %>
                                                     <tr style="background-color: rgb(248, 248, 140);">
-                                                        <td><%=items.caseNum%></td>
                                                         <td><%=items.name%></td>
-                                                        <td><%=items.quantity%></td>
-                                                        <td>&#8377;<%=items.Rate%></td>
-                                                        <td><%=items.per%></td>
-                                                        <td>&#8377;<%=items.subTotal%></td>
+                                                        <td><%=items.bf%></td>
+                                                        <td><%=items.GSM%></td>
+                                                        <td><%=items.Size%></td>
+                                                        <td><%=items.weight%></td>
+                                                        <td><%=items.reels%></td>
+                                                        <td>&#8377;<%=items.rate%></td>
+                                                        <td>&#8377;<%=items.amount%></td>
                                                       </tr>
                                                 <% }) %>
                                               
@@ -84,12 +89,13 @@
                               </div>
                         </td>
                         <td>&#8377;<%=bill.billAmount%></td>
-                        <td>&#8377;<%=bill.pkgCharge%></td>
+                        <td><%=bill.netWeight%> Ton</td>
+                        <td><%=bill.totalReels%></td>
                         <td>&#8377;<%=bill.taxableValue%></td>
                         <td>&#8377;<%=bill.cgst%></td>
                         <td>&#8377;<%=bill.sgst%></td>
                         <td>&#8377;<%=bill.igst%></td>
-                        <td>&#8377;<%=bill.finalBillValue%></td>
+                        <td>&#8377;<%=bill.totalBillValue%></td>
                         <td><%=bill.transport%></td>
                         <td><a href="/printBillOriginal/<%=bill._id%>" role="button" class="btn btn-secondary btn-sm"><i class="bi bi-printer-fill"></i></a></td>
                         <!-- <td><a href="/printBillDupe/<%=bill._id%>" role="button" class="btn btn-secondary btn-sm"><i class="bi bi-printer-fill"></i></a></td> -->

@@ -42,15 +42,18 @@ router.get('/newProduct', function(req,res,next){
 });
 
 router.post('/addNewProduct', function(req,res,next){
+  console.log(req.body);
   var product = new Product({
     name:req.body.productName,
-    rate:req.body.productRate,
-    per:req.body.productPer,
+    bf:req.body.bf,
+    GSM:req.body.gsm,
+    Size:req.body.size,
+    rate:req.body.rate,
   })
   product.save(function(err,result){
     if(err){
       console.log(err);
-      return res.render('newproduct');
+      return res.redirect('/index');
     }
     res.redirect('/newProduct');
   })
@@ -63,8 +66,10 @@ router.post('/updateProduct/:id', function(req,res,next){
     {_id:id},
     {$set:{
       name:req.body.productName,
-      rate:req.body.productRate,
-      per:req.body.per,
+      bf:req.body.bf,
+      gsm:req.body.gsm,
+      size:req.body.size,
+      rate:req.body.rate
     }}, 
     function(err,result){
       if(err){
@@ -115,72 +120,89 @@ router.get('/newBill', function(req, res, next) {
   
 });
 
-router.post('/newBillValues', function(req,res,next){
 
+router.post('/newBillValues', function(req,res,next){
 
   var invoiceNumber = req.body.invoiceNo;
   var invoiceDate = req.body.invoiceDate;
   var cusId = req.body.partyName;
-  // var pkgCharge = 0;
-  var finalBillValue = 0;
-  
-  const {caseNo} = req.body;
-  var caseNums = [];
-  caseNums = caseNo;
-  
+
+  console.log(req.body);
+    
   const {itemName} = req.body;
   var itemNames = [];
   itemNames = itemName;
 
-  const {itemQty} = req.body;
-  var itemQtys = [];
-  itemQtys = itemQty;
+  const {bf} = req.body;
+  var bfs = [];
+  bfs = bf;
+
+  const {gsm} = req.body;
+  var gsms = [];
+  gsms = gsm;
+
+  const {size} = req.body;
+  var sizes = [];
+  sizes = size;
+
+  const {weight} = req.body;
+  var weights = [];
+  weights = weight;
+
+  const {reels} = req.body;
+  var reelss = [];
+  reelss = reels;
 
   const {itemRate} = req.body;
-  var itemRates = [];
-  itemRates = itemRate;
+  var rates = [];
+  rates = itemRate;
 
-  const {itemPer} = req.body;
-  var itemPers = [];
-  itemPers = itemPer;
+  const {itemAmount} = req.body;
+  var amounts = [];
+  amounts = itemAmount;
+
+
+
 
   var cartItems = []
-  var totalItems = 0;
-  var netBillValue = 0;
-  var netBillValu = 0;
+  var totalReels = 0;
+  var netWeight = 0;
+  var totalBillValue = 0;
+  
   var igst = 0;
   var cgst = 0;
   var sgst = 0;
-  var totalBillValue = 0;
+
+  var gstValueFull = req.body.gstValue;
+  var gstValueHalf = Number(gstValueFull)/2;
+
+  var billValueAfterGST = 0;
+
 
   for(i=0; i<itemNames.length;i++){
-    if(itemQtys[i]>0){
+    if(weights[i]>0){
       cartItems.push(
         {
-          caseNum:caseNums[i], 
           name:itemNames[i],
-          quantity:itemQtys[i],
-          Rate:itemRates[i],
-          per:itemPers[i],
-          subTotal: itemQtys[i]*itemRates[i]
+          bf:bfs[i],
+          GSM:gsms[i],
+          Size:sizes[i],
+          weight:weights[i],
+          reels:reelss[i],
+          rate:rates[i],
+          amount:amounts[i]
         }
         )
     }
   }
 
-  console.log(req.body);
-
   cartItems.forEach(item=>{
-    totalItems += Number(item.quantity);
-    netBillValu += Number(item.subTotal);
+    totalReels += Number(item.reels);
+    netWeight += Number(item.weight);
+    totalBillValue += Number(item.amount);
   })
 
-  // pkgCharge = Number(netBillValu) * 0.03;
-  // netBillValue = pkgCharge + netBillValu;
-
-  netBillValue = netBillValu;
-
-  console.log(cartItems, cusId, totalItems, req.body.transport, netBillValue);
+  console.log(cartItems, cusId, totalReels, netWeight, totalBillValue, req.body.transport);
 
   Client.findById(cusId, function(err,resultt){
     if(err){
@@ -188,22 +210,20 @@ router.post('/newBillValues', function(req,res,next){
       return res.render('newBill');
     }
     if(resultt.gstType === "Central"){
-      igst = netBillValue * 0.18;
-      totalBillValue = igst + netBillValue;
-      finalBillValue = Math.round(Number(totalBillValue));
+      igst = (totalBillValue * gstValueFull)/100;
+      billValueAfterGST = Math.round(Number( igst + totalBillValue));
     }
     else if(resultt.gstType === "State"){
-      cgst = netBillValue * 0.09;
-      sgst = netBillValue * 0.09;
-      totalBillValue = cgst + sgst + netBillValue;
-      finalBillValue = Math.round(Number(totalBillValue));
+      cgst = (totalBillValue * gstValueHalf)/100;
+      sgst = (totalBillValue * gstValueHalf)/100;
+      billValueAfterGST = Math.round(Number(cgst + sgst + totalBillValue));
     }
 
     console.log('CGST : ' + cgst);
     console.log('SGST : ' + sgst);
     console.log('IGST : ' + igst);
-    console.log('TotalBillValue : ' + totalBillValue);
-    console.log(toWords.convert(totalBillValue, { currency: true }));
+    console.log('TotalBillValue : ' + billValueAfterGST);
+    console.log(toWords.convert(billValueAfterGST, { currency: true }));
 
     var bill = new Bill({
       invoiceNumber:invoiceNumber,
@@ -215,19 +235,21 @@ router.post('/newBillValues', function(req,res,next){
       state:resultt.state,
       gstNo:resultt.gstNo,
       gstType:resultt.gstType,
+      cgstV:gstValueHalf + "%",
+      sgstV:gstValueHalf + "%",
+      igstV:gstValueFull,
       panAadhar:resultt.panAadhar,
       transport:req.body.transport,
       billItems:cartItems,
-      billAmount:netBillValu,
-      totalCases:totalItems,
-      pkgCharge: 0,
-      taxableValue:netBillValue.toFixed(2),
+      billAmount:billValueAfterGST,
+      totalReels:totalReels,
+      netWeight:netWeight,
+      taxableValue:totalBillValue.toFixed(2),
       cgst:cgst.toFixed(2),
       sgst:sgst.toFixed(2),
       igst:igst.toFixed(2),
-      totalBillValue: totalBillValue.toFixed(2),
-      finalBillValue: finalBillValue,
-      amountInWords:toWords.convert(finalBillValue, { currency: true })
+      totalBillValue: billValueAfterGST.toFixed(2),
+      amountInWords:toWords.convert(billValueAfterGST, { currency: true })
     })
 
     bill.save(function(err,result){

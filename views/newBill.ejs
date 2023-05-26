@@ -42,40 +42,45 @@
                     <table class="table" id="childTable">
                         <thead>
                           <tr>
-                            <th scope="col">Case No</th>
-                            <th scope="col">Particulars</th>
-                            <th scope="col">Qty</th>
-                            <th scope="col">Rate</th>
-                            <th scope="col">Per</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">BF</th>
+                            <th scope="col">GSM</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Weight (T)</th>
+                            <th scope="col">No. of Reels</th>
+                            <th scope="col">Rate/Ton</th>
                             <th scope="col">Amount</th>
                            
                           </tr>
                         </thead>
                         <tbody>
-                            <!-- <% if (products) { %>
-                             <% products.forEach((product,index) => { %> -->
+                            <% if (products) { %>
+                             <% products.forEach((product,index) => { %>
                                 <tr>
-                                    <td ><input type="text" class="form-control" name="caseNo" id="caseNo"></td>
+                                    
                                     <td >
-                                        <!-- <input type="text" class="form-control" name="itemName" id="itemName" value="<%=product.name%>"> -->
-                                         <select class="form-select" name="itemName" id="itemName">
+                                        <input type="text" class="form-control" name="itemName" id="itemName" value="<%=product.name%>">
+                                         <!-- <select class="form-select" name="itemName" id="itemName">
                                             <option selected></option>
                                             <% if (products) { %>
                                              <% products.forEach(product => { %>
                                                 <option value="<%=product.name%>"><%=product.name%></option>
                                              <% }) %>
                                             <% } %>
-                                        </select> 
+                                        </select>  -->
                                     </td>
-                                    <td><input type="text" inputmode="numeric" value min="0" defaultValue=0 onkeyup="doMath('<%=index%>')" class="form-control quantity" name="itemQty" id="itemQty"></td>
+                                    <td><input type="number" inputmode="numeric" value="<%=product.bf%>" class="form-control" name="bf" id="bf"></td>
+                                    <td><input type="number" inputmode="numeric" value="<%=product.GSM%>" class="form-control" name="gsm" id="gsm"></td>
+                                    <td><input type="text" value="<%=product.Size%>" class="form-control" name="size" id="size"></td>
+                                    <td><input type="text" inputmode="numeric" value min="0" defaultValue=0 onkeyup="doMath('<%=index%>')" class="form-control quantity" name="weight" id="weight"></td>
+                                    <td><input type="text" inputmode="numeric" value min="0" defaultValue=0 class="form-control" name="reels" id="reels"></td>
                                     <td><input type="text" class="form-control" name="itemRate" id="itemRate_<%=index%>" onkeyup="doMath('<%=index%>')" value="<%=product.rate%>"></td>
-                                    <td><input type="text" class="form-control" name="itemPer" id="itemPer" value="<%=product.per%>"></td>
-                                    <td><input type="number" class="form-control" name="itemAmount" id="itemAmount_<%=index%>" value disabled></td>
-                                    <!-- <input type="hidden" name="actualValue" id="itemRate_<%=index%>" value="<%= product.rate %>"> -->
+                                    <td><input type="number" class="form-control" name="itemAmount" id="itemAmount_<%=index%>"></td>
+                                  
                                     <!-- <td class="col-1"><input type="button" class="btn btn-sm btn-primary" id="addrow" onclick="childrenRow()" value="+" /></td> -->
                                   </tr>
-                             <!-- <% }) %>
-                            <% } %> -->
+                             <% }) %>
+                            <% } %>
                           
                         </tbody>
                       </table>
@@ -102,15 +107,17 @@
                             <option value="<%=transport.name%>, <%=transport.place%>"><%=transport.name%></option>
                          <% }) %>
                         <% } %>
-                        
-                        
-                       
                     </select>
                 </div>
+
             </div>
             <div class="col-md-4">
                 <!-- Button trigger modal -->
 
+                <div class="input-group mb-1">
+                    <span class="input-group-text" id="gstValue">GST Value</span>
+                    <input type="number" required class="form-control" name="gstValue" id="gstValue" placeholder="GST Value">
+                </div>
             </div>
             <div class="col-md-4">
                 <button type="submit" class="btn btn-sm btn-success">Place Bill</button>
@@ -137,16 +144,16 @@ document.getElementById('invoiceDate').valueAsDate = new Date();
 function doMath(i) {
 
 var quantities = document.getElementsByClassName('quantity');
+console.log(quantities);
 
 // To calculate row wise subtotal and actual price
 var numOne = document.getElementById('itemRate_'+i).value;
-var numTwo = quantities[i].value;
+var numTwo = parseFloat(quantities[i].value);
 
 var amount = Number(numOne) * Number(numTwo);
 
-// console.log("Act value :" + actValue);
 document.getElementById('itemAmount_'+i).value = amount;
-
+document.getElementById('itemAmountValue_'+i).value = amount;
 }
 
 </script>

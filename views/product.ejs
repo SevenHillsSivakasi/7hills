@@ -12,17 +12,24 @@
                             <input type="text" class="form-control" required name="productName" id="productName" placeholder="Product Name">
                         </div>
                     </div>
+                    <div class="col-sm">
+                      <div class="input-group mb-3">
+                          <span class="input-group-text" id="bf">BF</span>
+                          <input type="number" class="form-control" required name="bf" id="bf" placeholder="BF Value">
+                      </div>
+                  </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="productRate">Rate</span>
-                        <input type="text" class="form-control" name="productRate" id="productRate" placeholder="Rate">
+                        <span class="input-group-text" id="gsm">GSM</span>
+                        <input type="text" class="form-control" name="gsm" id="gsm" placeholder="Enter Gsm">
                     </div>
                     <div class="input-group mb-3">
-                        <label class="input-group-text" for="productPer">Per</label>
-                        <select class="form-select" name="productPer" id="productPer" required>
-                            <option selected value="Case">Case</option>
-                            <option value="Box">Box</option>
-                        </select>
-                    </div>
+                      <span class="input-group-text" id="size">Size</span>
+                      <input type="text" class="form-control" name="size" id="size" placeholder="Enter Size">
+                  </div>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="rate">Rate</span>
+                      <input type="text" class="form-control" name="rate" id="rate" placeholder="Enter Rate">
+                  </div>
                     <div class="input-group mb-3">
                         <button class="btn btn-sm btn-primary" type="submit">Add Product</button>
                     </div>
@@ -41,9 +48,10 @@
                   <thead>
                     <tr>
                       <th scope="col">Product Name</th>
+                      <th scope="col">BF</th>
+                      <th scope="col">GSM</th>
+                      <th scope="col">Size</th>
                       <th scope="col">Rate</th>
-                      <th scope="col">Per</th>
-                      <th scope="col">Update</th>
                       <th scope="col">Delete</th>
                     </tr>
                   </thead>
@@ -52,8 +60,10 @@
                        <% products.forEach(product => { %>
                           <tr>
                               <td><%=product.name%></td>
+                              <td><%=product.bf%></td>
+                              <td><%=product.GSM%></td>
+                              <td><%=product.Size%></td>
                               <td><%=product.rate%></td>
-                              <td><%=product.per%></td>
                               <td>
                                   <!-- Button trigger modal -->
                           <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-<%=product._id%>">
@@ -75,12 +85,20 @@
                                             <input type="text" class="form-control" value="<%=product.name%>" name="productName" id="productName" placeholder="Name">
                                           </div>
                                           <div class="input-group mb-3">
-                                            <span class="input-group-text" id="partyName">Rate</span>
-                                            <input type="text" class="form-control" value="<%=product.rate%>" name="productRate" id="productRate" placeholder="Rate">
+                                            <span class="input-group-text" id="bf">BF</span>
+                                            <input type="number" class="form-control" value="<%=product.bf%>" name="bf" id="bf" placeholder="BF">
                                           </div>
                                           <div class="input-group mb-3">
-                                            <span class="input-group-text" id="partyName">Per</span>
-                                            <input type="text" class="form-control" value="<%=product.per%>" name="per" id="per" placeholder="Per">
+                                            <span class="input-group-text" id="gsm">GSM</span>
+                                            <input type="number" class="form-control" value="<%=product.GSM%>" name="gsm" id="gsm" placeholder="GSM">
+                                          </div>
+                                          <div class="input-group mb-3">
+                                            <span class="input-group-text" id="size">Size</span>
+                                            <input type="text" class="form-control" value="<%=product.Size%>" name="size" id="size" placeholder="size">
+                                          </div>
+                                          <div class="input-group mb-3">
+                                            <span class="input-group-text" id="rate">Rate</span>
+                                            <input type="number" class="form-control" value="<%=product.rate%>" name="rate" id="rate" placeholder="Rate">
                                           </div>
                                           
                                           <div class="input-group mb-3">
