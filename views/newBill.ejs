@@ -48,6 +48,7 @@
                             <th scope="col">Size</th>
                             <th scope="col">Weight (T)</th>
                             <th scope="col">No. of Reels</th>
+                            <th scope="col">Reel No</th>
                             <th scope="col">Rate/Ton</th>
                             <th scope="col">Amount</th>
                            
@@ -74,8 +75,9 @@
                                     <td><input type="text" value="<%=product.Size%>" class="form-control" name="size" id="size"></td>
                                     <td><input type="text" inputmode="numeric" value min="0" defaultValue=0 onkeyup="doMath('<%=index%>')" class="form-control quantity" name="weight" id="weight"></td>
                                     <td><input type="text" inputmode="numeric" value min="0" defaultValue=0 class="form-control" name="reels" id="reels"></td>
+                                    <td><input type="text" inputmode="text" class="form-control" name="reelsDetail" id="reelsDetail"></td>
                                     <td><input type="text" class="form-control" name="itemRate" id="itemRate_<%=index%>" onkeyup="doMath('<%=index%>')" value="<%=product.rate%>"></td>
-                                    <td><input type="number" class="form-control" name="itemAmount" id="itemAmount_<%=index%>"></td>
+                                    <td><input type="number" class="form-control" name="itemAmount" id="itemAmount_<%=index%>" step="any"></td>
                                   
                                     <!-- <td class="col-1"><input type="button" class="btn btn-sm btn-primary" id="addrow" onclick="childrenRow()" value="+" /></td> -->
                                   </tr>
@@ -130,8 +132,10 @@
  
 
 <%- include partials/footer %>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+
+
 // var i = 1;
 // function childrenRow() {
 //   i++;
@@ -150,10 +154,11 @@ console.log(quantities);
 var numOne = document.getElementById('itemRate_'+i).value;
 var numTwo = parseFloat(quantities[i].value);
 
-var amount = Number(numOne) * Number(numTwo);
+var amount = parseFloat((Number(numOne) * Number(numTwo)).toFixed(2));
 
-document.getElementById('itemAmount_'+i).value = amount;
-document.getElementById('itemAmountValue_'+i).value = amount;
+document.getElementById('itemAmount_'+i).value = (Math.round(amount * 100) / 100).toFixed(2); 
+document.getElementById('itemAmountValue_'+i).value = (Math.round(amount * 100) / 100).toFixed(2);
 }
+
 
 </script>

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var numeral = require('numeral');
 var Client = require('../modals/clients');
 var Product = require('../modals/product');
 var Transport = require('../modals/transport');
@@ -62,24 +63,28 @@ router.post('/addNewProduct', function(req,res,next){
 
 router.post('/updateProduct/:id', function(req,res,next){
   var id = req.params.id;
+  console.log(req.body);
   Product.findByIdAndUpdate(
     {_id:id},
     {$set:{
       name:req.body.productName,
       bf:req.body.bf,
-      gsm:req.body.gsm,
-      size:req.body.size,
+      GSM:req.body.gsm,
+      Size:req.body.size,
       rate:req.body.rate
     }}, 
-    function(err,result){
-      if(err){
-        console.log(err);
-        return res.redirect('/');
-      }
-      res.redirect('/newProduct');
-    }
     )
-})
+    .then(
+      function(result){
+        console.log("The Result is " + result);
+        res.redirect('/newProduct');
+      })
+      .catch((err)=>{
+        if(err){
+          console.log("The Error is " + err);
+        }
+      })
+    })
 
 router.get('/deleteProduct/:id', function(req,res,next){
   var id = req.params.id;
@@ -153,6 +158,10 @@ router.post('/newBillValues', function(req,res,next){
   var reelss = [];
   reelss = reels;
 
+  const {reelsDetail} = req.body;
+  var reelDetails = [];
+  reelDetails = reelsDetail;
+
   const {itemRate} = req.body;
   var rates = [];
   rates = itemRate;
@@ -160,9 +169,6 @@ router.post('/newBillValues', function(req,res,next){
   const {itemAmount} = req.body;
   var amounts = [];
   amounts = itemAmount;
-
-
-
 
   var cartItems = []
   var totalReels = 0;
@@ -183,12 +189,14 @@ router.post('/newBillValues', function(req,res,next){
     if(weights[i]>0){
       cartItems.push(
         {
+          sNo:Number(i+1),
           name:itemNames[i],
           bf:bfs[i],
           GSM:gsms[i],
           Size:sizes[i],
           weight:weights[i],
           reels:reelss[i],
+          reelDetails: reelDetails[i],
           rate:rates[i],
           amount:amounts[i]
         }
@@ -224,6 +232,7 @@ router.post('/newBillValues', function(req,res,next){
     console.log('IGST : ' + igst);
     console.log('TotalBillValue : ' + billValueAfterGST);
     console.log(toWords.convert(billValueAfterGST, { currency: true }));
+    
 
     var bill = new Bill({
       invoiceNumber:invoiceNumber,
@@ -237,14 +246,14 @@ router.post('/newBillValues', function(req,res,next){
       gstType:resultt.gstType,
       cgstV:gstValueHalf + "%",
       sgstV:gstValueHalf + "%",
-      igstV:gstValueFull,
+      igstV:gstValueFull + "%",
       panAadhar:resultt.panAadhar,
       transport:req.body.transport,
       billItems:cartItems,
       billAmount:billValueAfterGST,
       totalReels:totalReels,
-      netWeight:netWeight,
-      taxableValue:totalBillValue.toFixed(2),
+      netWeight:netWeight.toFixed(2),
+      taxableValue: numeral(totalBillValue).format('0.00'),
       cgst:cgst.toFixed(2),
       sgst:sgst.toFixed(2),
       igst:igst.toFixed(2),
