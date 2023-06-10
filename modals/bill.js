@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var schema = new Schema({
-    invoiceNumber:{type:String, required:true},
+    // invoiceNumber:{type:String, required:true},
     billDate:{type:Date, required:true},
     party:{type:String},
     address1:{type:String},

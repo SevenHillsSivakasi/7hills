@@ -132,7 +132,7 @@ router.post('/newBillValues', function(req,res,next){
   var invoiceDate = req.body.invoiceDate;
   var cusId = req.body.partyName;
 
-  console.log(req.body);
+
     
   const {itemName} = req.body;
   var itemNames = [];
@@ -183,13 +183,12 @@ router.post('/newBillValues', function(req,res,next){
   var gstValueHalf = Number(gstValueFull)/2;
 
   var billValueAfterGST = 0;
-
-
+  
+  
   for(i=0; i<itemNames.length;i++){
     if(weights[i]>0){
       cartItems.push(
         {
-          sNo:Number(i+1),
           name:itemNames[i],
           bf:bfs[i],
           GSM:gsms[i],
@@ -271,6 +270,7 @@ router.post('/newBillValues', function(req,res,next){
 
   })
   
+
 })
 
 router.get('/deleteBill/:id', function(req,res,next){
